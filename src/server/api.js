@@ -33,22 +33,37 @@ class MesApi {
 
     async getOnlineSystems() {
         try {
-            const response = await api.post('/api/ESS/GetSystems', {
-                sortBy: "registrationtime",
-                searchBy: "sn",
-                state: "normal",
-                keyword: "",
-                pageIndex: 1,
-                pageSize: 1000,
-                dataCount: 1
-            });
+            // 定义三种状态
+            const states = ['normal', 'protection', 'fault'];
             
-            return response.data.data.data.map(item => item.sys_sn);
+            // 使用 Promise.all 并行请求三个状态的数据
+            const results = await Promise.all(states.map(state => 
+                api.post('/api/ESS/GetSystems', {
+                    sortBy: "registrationtime",
+                    searchBy: "sn",
+                    state: state,
+                    keyword: "",
+                    pageIndex: 1,
+                    pageSize: 1000,
+                    dataCount: 1
+                })
+            ));
+    
+            // 合并所有结果并去重
+            const allSystems = results.reduce((acc, response) => {
+                const systems = response.data.data.data.map(item => item.sys_sn);
+                return [...acc, ...systems];
+            }, []);
+    
+            // 返回去重后的结果
+            return [...new Set(allSystems)];
+            
         } catch (error) {
             console.error('Get systems failed:', error.message);
             return [];
         }
     }
+    
 
     async sendSwitchCommand(sn) {
         try {
