@@ -44,7 +44,7 @@ class Controller {
         });
 
         // 每小时执行一次
-        cron.schedule('0 * * * *', () => {
+        cron.schedule('*/15 * * * *', () => {
             this.processDevices().catch(error => {
                 console.error('Error in scheduled process:', error);
             });
