@@ -38,7 +38,7 @@ class Database {
                             const newRecords = afterCount - beforeCount;
                             
                             if (newRecords > 0) {
-                                console.log(`Added ${newRecords} new SN(s) to database`);
+                                console.log(`Added ${newRecords} new SNs to database`);
                             } else {
                                 console.log('No new SNs to add');
                             }

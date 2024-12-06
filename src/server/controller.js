@@ -4,8 +4,6 @@ const db = require('../database/db');
 
 class Controller {
     async processDevices() {
-        console.log('Starting...');
-
         // 1. Login
         const loginSuccess = await api.login();
         if (!loginSuccess) {
