@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const api = require('./api');
-const db = require('./db');
+const db = require('../database/db');
 
 class Controller {
     async processDevices() {
@@ -18,7 +18,7 @@ class Controller {
         console.log(`Found ${onlineSNList.length} online systems`);
 
         // 3. Get unmodified devices from DB
-        const unmodifiedDevices = await db.getUnmodifiedDevices();
+        const unmodifiedDevices = await this.getAllDevices();
         console.log(`Found ${unmodifiedDevices.length} unmodified devices in database`);
 
         // 4. Find intersection

@@ -107,19 +107,9 @@ class Database {
     async getAllDevices() {
         return new Promise((resolve, reject) => {
             this.db.all(
-                'SELECT * FROM device_status ORDER BY created_at DESC',
+                'SELECT * FROM device_status',
                 [],
                 (err, rows) => err ? reject(err) : resolve(rows)
-            );
-        });
-    }
-
-    async getUnmodifiedDevices() {
-        return new Promise((resolve, reject) => {
-            this.db.all(
-                'SELECT sn FROM device_status WHERE modify_flag = 0',
-                [],
-                (err, rows) => err ? reject(err) : resolve(rows.map(row => row.sn))
             );
         });
     }

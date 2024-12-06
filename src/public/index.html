@@ -1,53 +1,61 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Device Status Monitor</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="app">
-        <div class="header">
-            <button @click="refreshData" class="refresh-btn">
-                刷新数据
-            </button>
-        </div>
-        <div class="container">
-            <div class="column">
-                <h2>待修改设备</h2>
-                <input 
-                    type="text" 
-                    class="search-input" 
-                    v-model="pendingSearch" 
-                    placeholder="搜索SN..."
-                >
-                <div class="device-list">
-                    <div v-for="device in filteredPendingDevices" 
-                         :key="device.sn" 
-                         class="device-item">
-                        {{ device.sn }}
-                    </div>
-                </div>
+      <div class="header">
+        <button @click="refreshData" class="refresh-btn">刷新数据</button>
+      </div>
+      <div class="container">
+        <div class="column">
+          <div class="column-header">
+            <div>待修改设备</div>
+            <input
+              type="text"
+              class="search-input"
+              v-model="pendingSearch"
+              placeholder="搜索SN..."
+            />
+          </div>
+          <div class="device-list">
+            <div
+              v-for="device in filteredPendingDevices"
+              :key="device.sn"
+              class="device-item"
+            >
+              {{ device.sn }}
             </div>
-            <div class="column">
-                <h2>已修改设备</h2>
-                <input 
-                    type="text" 
-                    class="search-input" 
-                    v-model="modifiedSearch" 
-                    placeholder="搜索SN..."
-                >
-                <div class="device-list">
-                    <div v-for="device in filteredModifiedDevices" 
-                         :key="device.sn" 
-                         class="device-item">
-                        {{ device.sn }}
-                        <span class="modify-time">{{ formatTime(device.modify_time) }}</span>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+        <div class="column">
+          <div class="column-header">
+            <div>已修改设备</div>
+            <input
+              type="text"
+              class="search-input"
+              v-model="modifiedSearch"
+              placeholder="搜索SN..."
+            />
+          </div>
+          <div class="device-list">
+            <div
+              v-for="device in filteredModifiedDevices"
+              :key="device.sn"
+              class="device-item"
+            >
+              {{ device.sn }}
+              <span class="modify-time"
+                >{{ formatTime(device.modify_time) }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
