@@ -18,7 +18,7 @@ class MesApi {
                 username: 'RD_inverter',
                 password: '1234'
             });
-            
+
             if (response.data.code === 200) {
                 this.token = response.data.data.AccessToken;
                 api.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
@@ -35,9 +35,9 @@ class MesApi {
         try {
             // 定义三种状态
             const states = ['normal', 'protection', 'fault'];
-            
+
             // 使用 Promise.all 并行请求三个状态的数据
-            const results = await Promise.all(states.map(state => 
+            const results = await Promise.all(states.map(state =>
                 api.post('/api/ESS/GetSystems', {
                     sortBy: "registrationtime",
                     searchBy: "sn",
@@ -48,22 +48,25 @@ class MesApi {
                     dataCount: 1
                 })
             ));
-    
-            // 合并所有结果并去重
-            const allSystems = results.reduce((acc, response) => {
-                const systems = response.data.data.data.map(item => item.sys_sn);
-                return [...acc, ...systems];
-            }, []);
-    
-            // 返回去重后的结果
-            return [...new Set(allSystems)];
-            
+
+            const allSystems = new Set(
+                results.flatMap(response => {
+                    // 检查response及其属性链是否存在
+                    if (response?.data?.data?.data) {
+                        return response.data.data.data.map(item => item.sys_sn);
+                    }
+                    return []; // 如果数据不存在，返回空数组
+                })
+            );
+
+            return Array.from(allSystems);
+
         } catch (error) {
             console.error('Get systems failed:', error.message);
             return [];
         }
     }
-    
+
 
     async sendSwitchCommand(sn) {
         try {
@@ -74,7 +77,7 @@ class MesApi {
                 start_time: "4",
                 remark: "6"
             });
-            
+
             return response.data.code === 200;
         } catch (error) {
             console.error(`Send switch command failed for ${sn}:`, error.message);

@@ -16,12 +16,12 @@ class Controller {
         console.log(`Found ${onlineSNList.length} online systems`);
 
         // 3. Get unmodified devices from DB
-        const unmodifiedDevices = await this.getAllDevices();
-        console.log(`Found ${unmodifiedDevices.length} unmodified devices in database`);
+        const bwDevices = await this.getAllDevices();
+        const bwSNList = bwDevices.map(item => item.sn);
 
         // 4. Find intersection
-        const devicesToUpdate = onlineSNList.filter(sn => unmodifiedDevices.includes(sn));
-        console.log(`Found ${devicesToUpdate.length} devices to update`);
+        const devicesToUpdate = onlineSNList.filter(sn => bwSNList.includes(sn));
+        console.log(`Update ${devicesToUpdate}`);
 
         // 5. Send commands and update DB
         for (const deviceSN of devicesToUpdate) {
