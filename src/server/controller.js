@@ -21,7 +21,7 @@ class Controller {
 
         // 4. Find intersection
         const devicesToUpdate = onlineSNList.filter(sn => bwSNList.includes(sn));
-        console.log(`Update ${devicesToUpdate}`);
+        console.log(`To update ${devicesToUpdate?.length} devices`);
 
         // 5. Send commands and update DB
         for (const deviceSN of devicesToUpdate) {
@@ -44,7 +44,7 @@ class Controller {
         });
 
         // 每小时执行一次
-        cron.schedule('*/15 * * * *', () => {
+        cron.schedule('0 * * * *', () => {
             this.processDevices().catch(error => {
                 console.error('Error in scheduled process:', error);
             });
